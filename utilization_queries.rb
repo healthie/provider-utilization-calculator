@@ -1,5 +1,6 @@
 require "graphql/client"
 require "graphql/client/http"
+require "active_support"
 require 'active_support/time'
 
 module HEALTHIE_API
