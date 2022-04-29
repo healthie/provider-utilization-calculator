@@ -30,8 +30,13 @@ module HEALTHIE_API
 end
 
 OrganizationAvailabilitiesQuery = HEALTHIE_API::Client.parse <<-'GRAPHQL'
- query($startDate: String, $endDate: String) {
-			availabilities (is_org: true, is_repeating: true, one_time: true,  startDate: $startDate, endDate: $endDate
+ query($startDate: String, $endDate: String, $appointment_type_id: String) {
+			availabilities (is_org: true, 
+							is_repeating: true, 
+							one_time: true,  
+							startDate: $startDate, 
+							endDate: $endDate, 
+							appointment_type_id: $appointment_type_id
 	) {
 				user_id
 				range_start
@@ -41,8 +46,13 @@ OrganizationAvailabilitiesQuery = HEALTHIE_API::Client.parse <<-'GRAPHQL'
 GRAPHQL
 
 OrganizationAppointmentsQuery = HEALTHIE_API::Client.parse <<-'GRAPHQL'
- query($startDate: String, $endDate: String) {
-			appointments (is_org: true, startDate: $startDate, endDate: $endDate, is_active: true, is_with_clients: true
+ query($startDate: String, $endDate: String, $appointment_type_id: ID) {
+			appointments (is_org: true, 
+						  startDate: $startDate, 
+						  endDate: $endDate, 
+						  is_active: true, 
+						  is_with_clients: true,
+						  filter_by_appointment_type_id:  $appointment_type_id
 	) {
 			id
 			start
@@ -53,10 +63,14 @@ GRAPHQL
 
 start_date = "2022-05-01"
 end_date = "2022-05-30"
+appointment_type_id = nil # If you want to check utilization for a speicifc appointment type, set the ID of the appointment type here
 
 raise "You need to set a start_date and end_date" unless start_date && end_date
 
-result = HEALTHIE_API::Client.query(OrganizationAvailabilitiesQuery, variables: {startDate: start_date, endDate: end_date})
+result = HEALTHIE_API::Client.query(OrganizationAvailabilitiesQuery, 
+									variables: {startDate: start_date, 
+												endDate: end_date, 
+												appointment_type_id: appointment_type_id})
 
 total_available_hours = 0
 
