@@ -15,7 +15,7 @@ cd provider-utilization-calculator
 bundle install
 ```
 
-Third, adjust the script to add in your API key, adjust the API URL to the correct environemtn,  and set desired date range.
+Third, adjust the script to add in your API key, adjust the API URL to the correct environment,  and set desired date range.
 
 
 # Running the script
